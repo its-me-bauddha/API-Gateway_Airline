@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const { UserRepository } = require('../repositories');
 const  AppError   = require('../utils/errors/app-error');
-const {Auth  } = require('../utils/common');
+const {Auth} = require('../utils/common');
 
 const userRepo = new UserRepository();
 
@@ -27,7 +27,8 @@ async function create(data){
 
 async function signin(data){
   try {
-    const user  = await userRepo.getUserByEmail(data.email);
+    const user  = await userRepo. getUserByEmail(data.email);
+    console.log(user);
     if(!user){
       throw new AppError('No user found for the given email' , StatusCodes.NOT_FOUND);
     }
@@ -36,7 +37,9 @@ async function signin(data){
     if(!passwordMatch){
       throw new AppError('Invalid Password' , StatusCodes.BAD_REQUEST);
     }
+
     const jwt = Auth.createToken({id:user.id,email:user.email});
+    console.log(jwt);
     return jwt;
   } catch (error) {
     console.log(error);
@@ -44,8 +47,30 @@ async function signin(data){
   }
 }
 
+async function isAuthenticated(token){
+  try {
+    if(!token){
+      throw new AppError('Missing JWT Token' , StatusCodes.BAD_REQUEST);
+    }
+    const response = Auth.verifyToken(token);
+    const user = await userRepo.get(response.id);
+    if(!user){
+      throw new AppError('No user find' , StatusCodes.NOT_FOUND);
+    }
+    return user.id; 
+  } catch (error) {
+    if(error instanceof AppError) throw error;
+    if(error.name == 'JsonWebTokenError'){
+      throw new AppError('Invalid JWT Token' , StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+    console.log(error);
+    throw error;
+  }
+}
+
 
 module.exports = {
     create,
-    signin
+    signin,
+    isAuthenticated
 }

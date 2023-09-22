@@ -19,11 +19,12 @@ async function signup(req, res) {
 }
 async function signin(req, res) {
   try {
-    const user  = await UserService.signin({
+    const response  = await UserService.signin({
      email: req.body.email,
      password : req.body.password
     });
-    SuccessResponse.data = user;
+    console.log(response);
+    SuccessResponse.data = response;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
