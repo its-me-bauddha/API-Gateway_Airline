@@ -9,21 +9,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'users',
-          key:'id'
-        }
+        allowNull: false,
       },
-      role_id: {
+      roleId: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'users',
-          key:'id'
-        }
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

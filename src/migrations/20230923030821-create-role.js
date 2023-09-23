@@ -1,7 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
-const { Enums } = require('../utils/common');
-const { ADMIN , CUSTOMER ,FLIGHT_COMPANY } = Enums.USER_ROLES_ENUMS;
+const {Enums } = require('../utils/common');
+const { ADMIN, CUSTOMER,FLIGHT_COMPANY } = Enums.USER_ROLES_ENUMS;
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Roles', {
@@ -12,10 +12,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type:Sequelize.ENUM,
+        type: Sequelize.ENUM,
         values:[ADMIN,CUSTOMER,FLIGHT_COMPANY],
-        allowNull:false,
-        defaultValue:CUSTOMER
+        defaultValue:CUSTOMER,
+        allowNull:false
       },
       createdAt: {
         allowNull: false,

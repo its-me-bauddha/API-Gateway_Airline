@@ -23,8 +23,21 @@ async function signin(req, res) {
      email: req.body.email,
      password : req.body.password
     });
-    console.log(response);
+   
     SuccessResponse.data = response;
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+async function addRoleToUser(req, res) {
+  try {
+    const role  = await UserService.addRoleToUser({
+     role: req.body.role,
+     id:req.body.id,
+    });
+    SuccessResponse.data = role;
     return res.status(StatusCodes.CREATED).json(SuccessResponse);
   } catch (error) {
     ErrorResponse.error = error;
@@ -34,5 +47,6 @@ async function signin(req, res) {
 
 module.exports = {
    signup,
-   signin
+   signin,
+   addRoleToUser
 }
